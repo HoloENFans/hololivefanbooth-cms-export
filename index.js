@@ -94,20 +94,22 @@ async function updateCSV() {
                 'Image 1': product.thumbnail ? product.thumbnail.url : '',
             }
 
-            try {
-                await fetch(`https://cms.holoen.fans/api/fanmerch/${product.id}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify({
-                        quantity: product.quantity,
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-RateLimit-Bypass': process.env.PAYLOAD_BYPASS_RATE_LIMIT_KEY ?? undefined,
-                        Authorization: process.env.PAYLOAD_API_KEY ? `users API-Key ${process.env.PAYLOAD_API_KEY}` : undefined,
-                    },
-                });
-            } catch {
-                console.log(`Failed updating stock in CMS for ${product.id}`);
+            if (typeof data[idx].Quantity === 'number') {
+                try {
+                    await fetch(`https://cms.holoen.fans/api/fanmerch/${product.id}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify({
+                            quantity: product.quantity,
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-RateLimit-Bypass': process.env.PAYLOAD_BYPASS_RATE_LIMIT_KEY ?? undefined,
+                            Authorization: process.env.PAYLOAD_API_KEY ? `users API-Key ${process.env.PAYLOAD_API_KEY}` : undefined,
+                       },
+                    });
+                } catch {
+                    console.log(`Failed updating stock in CMS for ${product.id}`);
+                }
             }
         }
     }
