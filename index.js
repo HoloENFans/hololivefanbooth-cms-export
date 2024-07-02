@@ -41,7 +41,7 @@ async function updateCSV() {
         columns: true,
     });
 
-    const products = await fetchProducts();
+    const products = (await fetchProducts()).filter((product) => product.price && product.price > 0);
 
     for (const product of products) {
         const idx = data.findIndex((row) => row.SKU === product.id);
@@ -120,7 +120,7 @@ async function updateCSV() {
 }
 
 async function createNewCSV() {
-    const products = await fetchProducts();
+    const products = (await fetchProducts()).filter((product) => product.price && product.price > 0);
 
     const productsCSV = products.map((product) => ({
         'Item name': product.name,
